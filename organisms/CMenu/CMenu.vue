@@ -1,5 +1,12 @@
 <template>
-  <div class="fixed z-10 w-screen h-screen sm:relative sm:w-auto sm:h-auto bg-indigo-500 text-gray-50">
+  <div :class="`
+  fixed z-10 w-screen h-screen md:relative md:w-auto md:h-auto bg-indigo-500 text-gray-50
+  ${
+    visible
+      ? 'hidden md:block'
+      : 'block md:hidden'
+  } 
+    `">
 
     <!-- branding -->
     <div class="h-52 mb-6 border border-red-600">
@@ -40,6 +47,10 @@ export default {
     entrypoint: {
       type: String,
       required: false,
+    },
+    visible: {
+      type: Boolean,
+      required: true,
     }
   },
 

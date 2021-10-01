@@ -4,10 +4,20 @@
       Capsul INC
     </div>
     <div class="grid grid-cols-2 justify-between w-full p-2">
-      <div @click="$store.dispatch('meta/swapMenu')">Menu</div>
+      <c-button :bare="true" @click="$store.dispatch('meta/swapMenu')">Menu</c-button>
       <div class="ml-auto">
         Opções
       </div>
     </div>
   </div>
 </template>
+
+<script>
+import CButton from '@/components/reusable/atoms/CButton/CButton.vue'
+
+export default {
+  components: {
+    CButton
+  }
+}
+</script>

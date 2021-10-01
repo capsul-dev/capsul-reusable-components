@@ -4,7 +4,6 @@
     <div
       v-for="([key, field], index) in Object.entries(fields)"
       :key="`field-${index}`"
-      class="w-80"
     >
 
     <c-input v-if="['text', 'password', 'number'].includes(field.type)" :type="field.type" :placeholder="field.placeholder" v-model="formData[key]">

@@ -26,7 +26,7 @@
 <script>
 import { useStore } from 'vuex'
 
-import CModal from '@/components/reusable/atoms/CModal/CModal.vue'
+import CModal from '@/components/reusable/organisms/CModal/CModal.vue'
 import CButton from '@/components/reusable/atoms/CButton/CButton.vue'
 
 export default {

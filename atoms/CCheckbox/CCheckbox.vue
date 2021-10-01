@@ -15,7 +15,7 @@
       <input
         ref="checkbox"
         type="checkbox"
-        :checked="checked"
+        :checked="modelValue"
         :disabled="!!required"
         @input="onInput"
         />
@@ -37,7 +37,7 @@
 <script>
 export default {
   props: {
-    checked: {
+    modelValue: {
       type: Boolean,
       required: true,
     },
@@ -49,7 +49,7 @@ export default {
 
   methods: {
     onInput(event) {
-      this.$emit("update:checked", event.target.checked);
+      this.$emit("update:modelValue", event.target.checked);
       this.$emit("valueChanged");
     },
     onClick() {
