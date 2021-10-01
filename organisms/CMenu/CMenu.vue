@@ -1,13 +1,13 @@
 <template>
-  <div class="w-full md:w-8/12 md:w-4/12 lg:w-3/12 bg-indigo-500 text-gray-50">
+  <div class="fixed z-10 w-screen h-screen sm:relative sm:w-auto sm:h-auto bg-indigo-500 text-gray-50">
 
     <!-- branding -->
     <div class="h-52 mb-6 border border-red-600">
-      Capsul INC
+      Usuário
     </div>
 
     <!-- menu entries -->
-    <div class="grid pl-3">
+    <div class="grid p-2">
       <div
         v-for="(route, index) in filterRoutes(routes)"
         :key="`route-${index}`"

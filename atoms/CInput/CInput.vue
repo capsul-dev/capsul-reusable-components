@@ -1,20 +1,16 @@
 <template>
-  <label class="px-2 my-1">
-    <div class="text-sm opacity-80 mb-2">
+  <label class="outline-none select-none">
+    <div class="text-sm opacity-80">
       <slot></slot>
     </div>
     <input
       class="
         w-full
         border-box
+        border border-gray-400
         bg-white
-        shadow-sm
         px-3
-        bg-gray-100
-        py-2
-        mb-2
-        dark:bg-gray-800 dark:text-white
-        rounded-full
+        py-1
       "
       ref="input"
       :type="type"
@@ -57,20 +53,6 @@ export default {
 
   methods: {
     onInput(event) {
-//      if (
-//        typeof this.$props.mask === "string" &&
-//        event.target.value.length >= this.$props.mask.length
-//      ) {
-//        console.log("aaa")
-//
-//        event.stopPropagation()
-//        return;
-//      }
-//
-//      const value = this.$props.mask
-//        ? mask(event.target.value, this.$props.mask)
-//        : event.target.value;
-
       this.$emit("update:modelValue", event.target.value);
     },
 

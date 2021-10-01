@@ -1,16 +1,16 @@
 <template>
   <div
     class="
-      checkbox
-      rounded
-      bg-white
-      shadow-md
-      py-2
-      grid grid-cols-checkbox
-      items-center
-      dark:bg-gray-800
+    checkbox
+    rounded
+    bg-white
+    shadow-md
+    py-2
+    grid grid-cols-checkbox
+    items-center
+    select-none
     "
-  >
+    >
     <div class="justify-self-center">
       <input
         ref="checkbox"
@@ -18,13 +18,18 @@
         :checked="checked"
         :disabled="!!required"
         @input="onInput"
-      />
+        />
     </div>
     <div
-      class="border-l-2 px-4 cursor-pointer dark:border-gray-500"
+      class="grid border-l-2 px-4 cursor-pointer"
       @click="onClick"
-    >
-      <slot></slot>
+      >
+      <div class="font-semibold">
+        <slot name="label" v-if="$slots.label"></slot>
+      </div>
+      <div class="opacity-80">
+        <slot name="description" v-if="$slots.description"></slot>
+      </div>
     </div>
   </div>
 </template>

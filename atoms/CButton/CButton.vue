@@ -1,5 +1,5 @@
 <template>
-  <div
+  <a
     :class="`
       ${
         !!props.isLoading
@@ -12,10 +12,13 @@
       px-4
       rounded
       cursor-pointer
+      inline-block select-none
       `"
+
+    @click="onClick"
   >
     <slot></slot>
-  </div>
+  </a>
 </template>
 
 <script>
@@ -25,6 +28,17 @@ export default {
       type: Boolean,
       default: false,
     },
+  },
+
+  methods: {
+    onClick(event) {
+      event.stopPropagation()
+      event.preventDefault()
+
+      if( !this.isLoading ) {
+        this.$emit('clicked', event)
+      }
+    }
   },
 
   setup(props) {

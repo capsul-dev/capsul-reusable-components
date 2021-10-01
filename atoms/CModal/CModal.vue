@@ -8,25 +8,30 @@
           bg-white
           w-full
           h-full
-          lg:w-1/2 lg:h-1/2
+          sm:w-1/2 sm:h-auto sm:min-h-modal
           z-10
           rounded-lg
           shadow-lg
           p-5
-          dark:bg-gray-900 dark:text-white
+
+          flex flex-col
         "
       >
         <div class="flex mb-6">
           <div class="flex-1 font-bold text-2xl">
             <slot name="title"></slot>
           </div>
-          <div class="cursor-pointer text-2xl opacity-50" @click="closeModal">
-            <i class="fa fa-close"></i>
+          <div class="cursor-pointer text-2xl opacity-50" @click="$store.dispatch('meta/closeModal')" v-if="closeHint">
+            <a class="fa fa-close">Fechar</a>
           </div>
         </div>
 
-        <div class="w-full">
+        <div :class="`flex-grow ${$slots.footer ? 'border-b mb-2' : ''}`">
           <slot name="body"></slot>
+        </div>
+
+        <div class="self-end" v-if="$slots.footer">
+          <slot name="footer"></slot>
         </div>
       </div>
     </div>
@@ -34,13 +39,12 @@
 </template>
 
 <script>
-import store from "@/store";
-
 export default {
-  methods: {
-    closeModal() {
-      store.dispatch("modal/close");
-    },
-  },
-};
+  props: {
+    closeHint: {
+      type: Boolean,
+      default: true,
+    }
+  }
+}
 </script>
