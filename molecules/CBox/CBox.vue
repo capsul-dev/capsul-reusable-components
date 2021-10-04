@@ -13,7 +13,7 @@
           sm:rounded-lg sm:shadow-lg
           flex flex-col
           bg-white
-          p-3 md:p-5
+          p-3 md:p-5 max-h-screen md:max-h-modal
         `"
       >
         <div class="flex mb-6">
@@ -27,11 +27,11 @@
           </c-button>
         </div>
 
-        <div v-if="!isCollapsed" :class="`flex-grow ${$slots.footer ? 'border-b pb-4' : ''}`">
+        <div v-if="!isCollapsed" :class="`overflow-y-scroll flex-grow ${$slots.footer ? 'border-b pb-5' : ''}`">
           <slot name="body"></slot>
         </div>
 
-        <div class="self-end" v-if="$slots.footer">
+        <div class="self-end mt-2" v-if="$slots.footer">
           <slot name="footer"></slot>
         </div>
       </div>

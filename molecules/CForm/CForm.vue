@@ -10,10 +10,14 @@
       {{ field.label }}
     </c-input>
 
-    <c-checkbox v-else-if="field.type === 'checkbox'" v-model="formData[key]">
-      <template #label>{{ field.label }}</template>
-      <template #description v-if="field.description">{{ field.description }}</template>
-    </c-checkbox>
+    <!-- checkbox and radio -->
+    <div v-else-if="['checkbox', 'radio'].includes(field.type)">
+      <header class="text-sm py-2">{{ field.label }}</header>
+      <c-checkbox v-if="field.type === 'checkbox'" v-for="(value, vindex) in field.values" :key="`value-${vindex}`" v-model="formData[key]" class="mb-2">
+        <template #label>{{ value.label || value }}</template>
+        <template #description v-if="value.description">{{ value.description }}</template>
+      </c-checkbox>
+    </div>
     </div>
   </div>
 </template>
@@ -46,7 +50,7 @@ export default {
         ...a,
         [key]: {
           ...value,
-          type: value.type || 'text'
+          type: value.type || 'text',
         }
 
       }), {})

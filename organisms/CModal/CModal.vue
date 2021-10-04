@@ -6,7 +6,7 @@
     <template #body>
       <slot name="body"></slot>
     </template>
-    <template #footer>
+    <template #footer v-if="$slots.footer">
       <slot name="footer"></slot>
     </template>
   </c-box>
