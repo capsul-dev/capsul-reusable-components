@@ -1,5 +1,5 @@
 <template>
-  <div v-if="visible" :class="`${ isFloating ? 'absolute z-10' : 'mb-3 md:mb-4' }`" @click="closeModal">
+  <div v-if="visible" :class="`${ isFloating ? 'absolute z-30' : 'mb-2' }`" @click="$emit('close')">
     <div v-if="isFloating" class="fixed inset-0 bg-gray-900 opacity-50"></div>
     <div :class="`${ isFloating ? 'fixed inset-0 flex justify-center items-center' : ''}`">
       <div
@@ -7,17 +7,17 @@
         :class="`
           ${
             isFloating
-              ? 'w-full h-full sm:w-3/4 md:w-3/5 lg:w-5/12 sm:h-auto sm:min-h-modal z-10'
-              : 'rounded-md shadow-md'
+              ? 'w-full h-full sm:w-3/4 md:w-3/5 lg:w-5/12 sm:h-auto sm:min-h-modal z-10 max-h-screen md:max-h-modal'
+              : 'rounded-md shadow'
           }
-          sm:rounded-lg sm:shadow-lg
+          sm:rounded-lg
           flex flex-col
           bg-white
-          p-3 md:p-5 max-h-screen md:max-h-modal
+          p-3 md:p-5
         `"
       >
         <div class="flex mb-6">
-          <div v-if="$slots.title || title" class="flex-1 font-bold text-xl">
+          <div v-if="$slots.title || title" class="flex-1 font-semibold text-lg">
             <slot v-if="$slots.title" name="title"></slot>
             <div v-else-if="title">{{ title }}</div>
           </div>

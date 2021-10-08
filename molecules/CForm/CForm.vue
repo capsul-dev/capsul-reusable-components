@@ -2,11 +2,12 @@
   <div class="grid gap-y-4 py-2 px-2">
     <!-- form -->
     <div
-      v-for="([key, field], index) in Object.entries(fields)"
+      v-for="([key, field], index) in fields"
       :key="`field-${index}`"
     >
 
-    <c-input v-if="['text', 'password', 'number'].includes(field.type)" :type="field.type" :placeholder="field.placeholder" v-model="formData[key]">
+
+    <c-input v-if="['text', 'password', 'number'].includes(field.type)" :type="field.type" :placeholder="field.placeholder" :mask="field.mask" v-model="formData[key]">
       {{ field.label }}
     </c-input>
 
@@ -20,16 +21,32 @@
     </div>
     </div>
   </div>
+  <div class="grid gap-y-2 mt-4">
+    <div v-for="([module, field], index) in moduleFields" :key="`modulefield-${index}`">
+      <c-search
+        v-model="formData[module]"
+        :model="module" :module="field.module" :module-name="field.name.capitalize()"
+        :field="Object.keys(field.fields)[0]"
+        :label="Object.values(field.fields)[0]?.label"
+        :array="field.array"
+        @add="$emit('add', $event)">
+      </c-search>
+    </div>
+  </div>
 </template>
 
 <script>
+import { useStore } from 'vuex'
+
 import CInput from '@/components/reusable/atoms/CInput/CInput.vue'
 import CCheckbox from '@/components/reusable/atoms/CCheckbox/CCheckbox.vue'
+import CSearch from '@/components/reusable/molecules/CSearch/CSearch.vue'
 
 export default {
   components: {
     CInput,
     CCheckbox,
+    CSearch,
   },
 
   props: {
@@ -45,15 +62,21 @@ export default {
   },
 
   setup(props) {
-    return {
-      fields: Object.entries(props.form).reduce((a, [key, value]) => ({
-        ...a,
-        [key]: {
-          ...value,
-          type: value.type || 'text',
-        }
 
-      }), {})
+    const store = useStore()
+
+    const filterFields = (condition) => 
+      Object.entries(props.form)
+        .filter(([, field]) => !field.meta)
+        .filter(([, field]) => condition(field))
+
+    return {
+      fields: filterFields((f) => typeof f.module !== 'string'),
+      moduleFields: filterFields((f) => typeof f.module === 'string')
+      .map(([key, value]) => [key, {
+        array: !!value.array,
+        ...store.getters[`${value.module}/description`]
+      }])
     }
   }
 }

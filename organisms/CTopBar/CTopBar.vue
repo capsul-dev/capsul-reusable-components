@@ -1,5 +1,5 @@
 <template>
-  <div class="h-10 bg-red-100">
+  <div class="h-10 bg-red-100 z-20">
     <div class="bg-red-200">
       Capsul INC
     </div>

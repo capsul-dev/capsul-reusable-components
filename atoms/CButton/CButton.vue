@@ -35,7 +35,8 @@ export default {
     bare: {
       type: Boolean,
       default: false,
-    }
+    },
+    
   },
 
   methods: {
