@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import CBox from '@/components/reusable/molecules/CBox/CBox.vue'
+import { CBox } from '@/components/reusable'
 
 export default {
   components: {

@@ -1,0 +1,7 @@
+export { default as CArrow } from './CArrow/CArrow.vue'
+export { default as CBreadcumb } from './CBreadcumb/CBreadcumb.vue'
+export { default as CButton } from './CButton/CButton.vue'
+export { default as CCheckbox } from './CCheckbox/CCheckbox.vue'
+export { default as CInput } from './CInput/CInput.vue'
+export { default as CPagination } from './CPagination/CPagination.vue'
+export { default as CStatus } from './CStatus/CStatus.vue'

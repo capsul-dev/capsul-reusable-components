@@ -4,27 +4,26 @@
     checkbox
     rounded
     bg-white
-    shadow
     py-2
-    grid grid-cols-checkbox
+    border
+    flex
     items-center
     select-none
     "
     >
-    <div class="justify-self-center">
+    <div class="px-2 w-8">
       <input
         ref="checkbox"
         type="checkbox"
-        :checked="modelValue"
-        :disabled="!!required"
+        v-model="bindVal"
         @input="onInput"
         />
     </div>
     <div
-      class="grid border-l-2 px-4 cursor-pointer"
+      class="grid border-l px-4 cursor-pointer"
       @click="onClick"
       >
-      <div class="font-semibold">
+      <div class="">
         <slot name="label" v-if="$slots.label"></slot>
       </div>
       <div class="opacity-80">
@@ -38,25 +37,48 @@
 export default {
   props: {
     modelValue: {
-      type: Boolean,
       required: true,
     },
     required: {
       type: Boolean,
       default: false,
     },
+    value: {
+      type: [String, Boolean],
+      required: false,
+    },
+    array: {
+      type: Boolean,
+      default: false,
+    }
   },
 
   methods: {
-    onInput(event) {
-      this.$emit("update:modelValue", event.target.checked);
-      this.$emit("valueChanged");
-    },
     onClick() {
       if (!this.required) {
         this.$refs.checkbox.click();
       }
     },
+  },
+
+  computed: {
+    bindVal: {
+      get() {
+        return Array.isArray(this.modelValue)
+          ? this.modelValue.includes(this.value)
+          : !!this.value
+      },
+
+      set() {
+        if( this.array || Array.isArray(this.modelValue) ) {
+          this.$emit('update:modelValue', !this.modelValue.includes(this.value)
+            ? [ ...this.modelValue||[], this.value ]
+            : this.modelValue.filter((v) => v !== this.value))
+        } else {
+          this.$emit('update:modelValue', !(this.modelValue === 'true'))
+        }
+      }
+    }
   },
 };
 </script>

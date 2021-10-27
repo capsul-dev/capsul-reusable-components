@@ -1,37 +1,39 @@
 <template>
   <div class="border p-2">
     <header class="font-semibold mb-1">{{ moduleName }}</header>
-    <div v-if="expand">
+    <div v-if="isExpanded">
       <c-form :form="fields" :form-data="item">
       </c-form>
       <c-button :bare="true" class="justify-self-end mr-2">Salvar</c-button>
-      <c-button :bare="true" @click="clear">Limpar</c-button>
+      <c-button :bare="true" @clicked="clear" v-if="!builtin">Limpar</c-button>
     </div>
 
     <div v-else class="flex">
       <c-input class="flex-1 pr-4" @input="lazySearch" v-model="inputValue">{{ label }}</c-input>
-      <c-button class="self-end" @click="expand = true">Adicionar</c-button>
+      <c-button :bare="true" class="self-end" @clicked="expanded = true">Adicionar</c-button>
     </div>
 
-    <div v-if="!expand" :class="`grid gap-y-1 mt-4 select-none ${isLoading ? 'opacity-30' : ''}`">
-      <div v-for="(item, index) in items" :key="`item-${index}`" @click="select(item)">
-        <div class="cursor-pointer p-2 border">{{ item[field] }}</div>
+    <div v-if="!isExpanded">
+      <div :class="`grid select-none ${isLoading ? 'opacity-30' : ''}`">
+        <div v-for="(item, index) in items" :key="`item-${index}`" @click="select(item)">
+          <div class="cursor-pointer p-2 border">{{ item[field] }}</div>
+        </div>
       </div>
-    </div>
 
-    <div v-for="(item, index) in selected" :key="`item-${index}`">
-      <div>{{ item[field] }}</div>
-      <div @click="unselect(item)">Deletar</div>
+        <div v-if="selected.length > 0" class="mt-4">
+        <div v-for="(item, index) in selected" :key="`item-${index}`" class="flex justify-between p-2 border">
+          <div>{{ item[field] }}</div>
+          <c-button :bare="true" @clicked="unselect(item)">Deletar</c-button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { computed, ref, defineAsyncComponent, onMounted } from 'vue'
+import { inject, computed, ref, defineAsyncComponent, onMounted } from 'vue'
 import { useStore } from 'vuex'
-
-import CInput from '@/components/reusable/atoms/CInput/CInput.vue'
-import CButton from '@/components/reusable/atoms/CButton/CButton.vue'
+import { CInput, CButton } from '@/components/reusable'
 
 export default {
   components: {
@@ -68,16 +70,26 @@ export default {
     array: {
       type: Boolean,
       required: true,
+    },
+    builtin: {
+      type: Boolean,
+      default: false,
+    },
+    activeOnly: {
+      type: Boolean,
+      default: false,
     }
   },
 
   methods: {
     clear() {
-      this.expand = false
+      this.expanded = false
       this.store.dispatch(`${this.module}/clear`)
     },
 
     select(item) {
+      this.inputValue = ''
+      this.store.dispatch(`${this.module}/clearAll`)
       this.$emit('update:modelValue', this.array
         ? [ ...this.modelValue, item ]
         : item
@@ -103,10 +115,10 @@ export default {
 
       this.store.dispatch(`${this.module}/getAll`, {
         filter: {
+          ...(this.activeOnly ? { active: 'true' } : {}),
           [this.field]: {
             $regex: value.trim(),
             $options: 'i'
-            
           }
         }
       })
@@ -122,18 +134,21 @@ export default {
 
   setup(props) {
     const store = useStore()
+    const module = inject('module')
+    const expanded = ref(false)
 
     onMounted(() => store.dispatch(`${props.module}/clearAll`))
 
     return {
       store,
-      expand: ref(false),
+      expanded,
+      isExpanded: computed(() => expanded.value || props.builtin),
       fields: computed(() => store.getters[`${props.module}/fields`]),
-      item: computed(() => store.state[props.module].item),
+      item: computed(() => store.state[module._value].item[props.model]),
       items: computed(() => store.state[props.module].items),
       isLoading: computed(() => store.state[props.module].isLoading),
 
-      inputValue: computed(() => (props.modelValue||{})[props.field]),
+      inputValue: ref(''),
       selected: computed(() => {
         const options = props.modelValue
         return props.array

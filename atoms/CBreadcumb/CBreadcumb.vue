@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-2 pl-2 text-sm">
+  <div class="pt-2 pl-2 text-xs">
     <router-link class="_link text-md" v-for="(route, index) in routes" :key="`route-${index}`" :to="{ name: route.name, params: $route.params }">
       {{ route.meta.title === '%viewTitle%' ? viewTitle : route.meta.title }}
     </router-link>

@@ -1,0 +1,5 @@
+export { default as CBox } from './CBox/CBox.vue'
+export { default as CForm } from './CForm/CForm.vue'
+export { default as CPrompt } from './CPrompt/CPrompt.vue'
+export { default as CSearch } from './CSearch/CSearch.vue'
+export { default as CTable } from './CTable/CTable.vue'

@@ -1,10 +1,10 @@
 <template>
-  <div class="h-10 bg-red-100 z-20">
-    <div class="bg-red-200">
-      Capsul INC
+  <div class="flex sticky inset-0 md:grid md:grid-cols-menu h-10 z-40 text-white">
+    <div class="bg-blue-800 cursor-pointer" @click="$router.push({ name: 'dashboard-home' })">
+      Kampfsul INC
     </div>
-    <div class="grid grid-cols-2 justify-between w-full p-2">
-      <c-button :bare="true" @click="$store.dispatch('meta/swapMenu')">Menu</c-button>
+    <div class="grid grid-cols-2 justify-between w-full p-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700">
+      <c-button :bare="true" @clicked="$store.dispatch('meta/swapMenu')">Menu</c-button>
       <div class="ml-auto">
         Opções
       </div>
@@ -13,11 +13,11 @@
 </template>
 
 <script>
-import CButton from '@/components/reusable/atoms/CButton/CButton.vue'
+import { CButton } from '@/components/reusable'
 
 export default {
   components: {
     CButton
-  }
+  },
 }
 </script>

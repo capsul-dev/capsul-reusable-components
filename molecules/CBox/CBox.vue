@@ -1,6 +1,6 @@
 <template>
-  <div v-if="visible" :class="`${ isFloating ? 'absolute z-30' : 'mb-2' }`" @click="$emit('close')">
-    <div v-if="isFloating" class="fixed inset-0 bg-gray-900 opacity-50"></div>
+  <div v-if="visible" :class="`${ isFloating ? 'absolute z-50' : 'mb-2' } ${ animate ? 'animate-fade' : '' }`" @click="$emit('close')">
+    <div v-if="isFloating" class="fixed inset-0 bg-gray-900 opacity-60"></div>
     <div :class="`${ isFloating ? 'fixed inset-0 flex justify-center items-center' : ''}`">
       <div
         @click="$event.stopPropagation()"
@@ -10,10 +10,14 @@
               ? 'w-full h-full sm:w-3/4 md:w-3/5 lg:w-5/12 sm:h-auto sm:min-h-modal z-10 max-h-screen md:max-h-modal'
               : 'rounded-md shadow'
           }
+          ${
+            isFloating && animate
+              ? 'animate-toast' : ''
+          }
           sm:rounded-lg
           flex flex-col
           bg-white
-          p-3 md:p-5
+          px-2 py-3 md:px-5 md:py-5
         `"
       >
         <div class="flex mb-6">
@@ -27,7 +31,7 @@
           </c-button>
         </div>
 
-        <div v-if="!isCollapsed" :class="`overflow-y-scroll flex-grow ${$slots.footer ? 'border-b pb-5' : ''}`">
+        <div v-if="!isCollapsed" :class="`overflow-auto flex-grow ${$slots.footer ? 'border-b pb-5' : ''}`">
           <slot name="body"></slot>
         </div>
 
@@ -41,7 +45,7 @@
 
 <script>
 import { computed, ref } from 'vue'
-import CButton from '@/components/reusable/atoms/CButton/CButton.vue'
+import { CButton } from '@/components/reusable'
 
 export default {
   props: {
@@ -72,6 +76,10 @@ export default {
     collapsable: {
       type: Boolean,
       default: false,
+    },
+    animate: {
+      type: Boolean,
+      default: true,
     }
   },
 
@@ -87,3 +95,15 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: all .15s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

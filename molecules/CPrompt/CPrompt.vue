@@ -13,6 +13,7 @@
         <c-button
           v-for="(action, index) in actions"
           :key="`action-${index}`"
+          :type="action.type"
 
           @clicked="onClick(action)"
         >
@@ -24,14 +25,13 @@
 </template>
 
 <script>
+import { defineAsyncComponent } from 'vue'
 import { useStore } from 'vuex'
-
-import CModal from '@/components/reusable/organisms/CModal/CModal.vue'
-import CButton from '@/components/reusable/atoms/CButton/CButton.vue'
+import { CButton } from '@/components/reusable'
 
 export default {
   components: {
-    CModal,
+    CModal: defineAsyncComponent(() => import('@/components/reusable/organisms/CModal/CModal.vue')),
     CButton,
   },
 

@@ -3,19 +3,14 @@
     :class="`
       inline-block select-none
       ${
-        !props.bare ? (props.isLoading
-          ? 'bg-gray-200'
-          : 'bg-gradient-to-r from-green-500 to-green-700') : ''
-      }
-      ${
-        !props.bare
-          ? 'text-white text-center font-bold py-2 px-4 rounded'
+        !bare
+          ? `text-white text-center font-bold py-2 px-4 rounded bg-${type}-500 border-b-4 border-${type}-700 filter drop-shadow-lg`
           : ''
       }
       ${
-        !props.isLoading
+        !disabled
           ? 'cursor-pointer'
-          : 'cursor-not-allowed'
+          : 'cursor-not-allowed opacity-50'
       }
       `"
 
@@ -28,7 +23,7 @@
 <script>
 export default {
   props: {
-    isLoading: {
+    disabled: {
       type: Boolean,
       default: false,
     },
@@ -36,7 +31,10 @@ export default {
       type: Boolean,
       default: false,
     },
-    
+    type: {
+      type: String,
+      default: 'success',
+    }
   },
 
   methods: {
@@ -44,16 +42,10 @@ export default {
       event.stopPropagation()
       event.preventDefault()
 
-      if( !this.isLoading ) {
+      if( !this.disabled ) {
         this.$emit('clicked', event)
       }
     }
-  },
-
-  setup(props) {
-    return {
-      props,
-    };
   },
 };
 </script>
